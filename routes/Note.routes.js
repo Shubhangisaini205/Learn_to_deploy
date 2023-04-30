@@ -1,6 +1,7 @@
 const express = require("express");
 const noteRouter = express.Router();
-const { NoteModel } = require("../model/Note.model")
+const { NoteModel } = require("../model/Note.model");
+const { UserModel } = require("../model/User.model");
 
 noteRouter.post("/create", async (req, res) => {
     try {
@@ -16,12 +17,21 @@ noteRouter.post("/create", async (req, res) => {
 
 
 noteRouter.get("/", async (req, res) => {
+    
     try {
-        const notes = await NoteModel.find({authorId:req.body.authorId})
-        res.status(200).send(notes)
+        // const admin = await UserModel.findOne({email:"admin@gmail.com", pass:"admin123"})
+        // console.log( "admin", admin)
+        // if(admin!==[]){
+        //     const notes = await NoteModel.find()
+        //     res.status(200).send(notes)
+        // }else{
+            const notes = await NoteModel.find({authorId:req.body.authorId})
+            res.status(200).send(notes)
+        // }
+        
     } catch (error) {
         console.log(error)
-        res.status(400).send({ "err": error.message })
+        res.status(400).send({ "err": "something went wrong" })
     }
 })
 
